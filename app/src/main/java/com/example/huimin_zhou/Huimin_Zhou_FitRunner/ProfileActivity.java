@@ -44,13 +44,13 @@ public class ProfileActivity extends Activity {
     public static final int ID_PHOTO_PICKER_FROM_CAMERA = 0;
     public static final int ID_PHOTO_PICKER_FROM_GALLERY = 1;
     private Uri UriPath = null;
-    private ImageView imageView;
+    private ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        imageView = (ImageView) findViewById(R.id.view_photo);
+        mImageView = (ImageView) findViewById(R.id.view_photo);
 
         if (savedInstanceState != null) {
             UriPath = savedInstanceState.getParcelable(URI_KEY);
@@ -86,12 +86,12 @@ public class ProfileActivity extends Activity {
         }
         ((Spinner)findViewById(R.id.spinner_major)).setSelection(sharedPreferences.getInt(MY_MAJOR, 0));
         if (UriPath != null) {
-            imageView.setImageURI(UriPath);
+            mImageView.setImageURI(UriPath);
         } else if (photo.length() != 0) {
             UriPath = Uri.parse(photo);
-            imageView.setImageURI(Uri.parse(photo));
+            mImageView.setImageURI(Uri.parse(photo));
         } else {
-            imageView.setImageResource(R.drawable.default_photo);
+            mImageView.setImageResource(R.drawable.default_photo);
         }
     }
 
@@ -140,7 +140,7 @@ public class ProfileActivity extends Activity {
             try {
                 switch (request_code) {
                     case ID_PHOTO_PICKER_FROM_CAMERA:
-                        // crop the photo and save in the same uri
+                        // TODO: crop the photo and save in the same uri
                         Crop.of(UriPath, UriPath).asSquare().start(this);
                         break;
                     case ID_PHOTO_PICKER_FROM_GALLERY:
@@ -148,7 +148,7 @@ public class ProfileActivity extends Activity {
                         Crop.of(dataData, UriPath).asSquare().start(this);
                         break;
                     case Crop.REQUEST_CROP:
-                        imageView.setImageURI(Crop.getOutput(data));
+                        mImageView.setImageURI(Crop.getOutput(data));
                         break;
                     default:
                         return;

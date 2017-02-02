@@ -26,9 +26,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.huimin_zhou.Huimin_Zhou_FitRunner.StartActivity"/>
+        <activity android:name="com.example.huimin_zhou.Huimin_Zhou_FitRunner.ManualActivity"/>
 
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+
+        <activity android:name=".MapActivity" />
+
+        <activity android:name=".HistoryEntryActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

@@ -2,8 +2,8 @@
     <string name="app_name">Huimin_Zhou_FitRunner</string>
 
     <!--Welcome-->
-    <string name="text_input">Input</string>
-    <string name="text_activity">Activity</string>
+    <string name="text_input">Input Type</string>
+    <string name="text_activity">Activity Type</string>
     <string name="btn_start">start</string>
     <string name="btn_syn">syn</string>
 
@@ -12,19 +12,26 @@
         <item>GPS</item>
         <item>Automatic</item>
     </string-array>
+
     <string-array name="entries_activity">
         <item>Running</item>
         <item>Walking</item>
-        <item>Swimming</item>
+        <item>Standing</item>
+        <item>Cycling</item>
         <item>Hiking</item>
-        <item>Diving</item>
-        <item>Skiing</item>
-        <item>Biking</item>
-        <item>Yoga</item>
+        <item>Downhill Skiing</item>
+        <item>Cross-Country Skiing</item>
+        <item>Snowboarding</item>
         <item>Skating</item>
+        <item>Swimming</item>
+        <item>Mountain Biking</item>
+        <item>Wheelchair</item>
+        <item>Elliptical</item>
+        <item>Other</item>
     </string-array>
 
     <!--Welcome Sub Configure-->
+    <string name="text_date">Date and time</string>
     <string name="text_dura">Duration</string>
     <string name="text_dist">Distance</string>
     <string name="text_calo">Calories</string>
@@ -108,4 +115,6 @@
         <item>Take a Photo</item>
         <item>Select from Gallery</item>
     </string-array>
+
+    <string name="actionbar">delete</string>
 </resources>

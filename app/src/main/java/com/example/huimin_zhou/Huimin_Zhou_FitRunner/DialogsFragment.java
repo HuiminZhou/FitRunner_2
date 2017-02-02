@@ -9,10 +9,14 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.example.huimin_zhou.Huimin_Zhou_FitRunner.Database.ExerciseEntry;
 
 import java.util.Calendar;
 
@@ -20,7 +24,7 @@ import java.util.Calendar;
  * Created by Lucidity on 17/1/18.
  */
 
-public class DialogsFragment extends DialogFragment {
+public class DialogsFragment extends DialogFragment implements DialogInterface.OnClickListener {
     public static final int DIALOG_DATE_PICKER = 0;
     public static final int DIALOG_TIME_PICKER = 1;
     public static final int DIALOG_DURATION = 2;
@@ -30,6 +34,13 @@ public class DialogsFragment extends DialogFragment {
     public static final int DIALOG_COMMENT = 6;
     public static final int DIALOG_ID_PHOTO_PICKER = 7;
     private static final String DIALOG_ID_KEY = "dialog_key";
+
+    private EditText editText = null;
+    private int id = 0;
+    private String date = "";
+    private String time = "";
+    private String[] months = new String[] {
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
     public static DialogsFragment newInstance(int id) {
         DialogsFragment dialogsFragment = new DialogsFragment();
@@ -41,29 +52,40 @@ public class DialogsFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle saveInstanceState) {
-        int id = getArguments().getInt(DIALOG_ID_KEY);
+        id = getArguments().getInt(DIALOG_ID_KEY);
         final Activity container = getActivity();
 
         Calendar mCalendar = Calendar.getInstance();
         AlertDialog.Builder mDialog = new AlertDialog.Builder(container);
         View view = container.getLayoutInflater().inflate(R.layout.layout_startdialog, null);
         mDialog.setView(view);
-        mDialog.setPositiveButton(R.string.btn_ok, null);
+
+        editText = (EditText)view.findViewById(R.id.dialog_input);
+        mDialog.setPositiveButton(R.string.btn_ok, this);
         mDialog.setNegativeButton(R.string.btn_cancel, null);
-        EditText editText = (EditText)view.findViewById(R.id.dialog_input);
 
         switch (id) {
             case DIALOG_DATE_PICKER:
-                DatePickerDialog.OnDateSetListener mListner = new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog.OnDateSetListener mListner =
+                        new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker view, int year, int month, int day) {
-
+                        // Log.d("month index", "" + month);
+                        date = months[month] + " " + day + " " + year;
+                        ManualActivity.mEntry.setDate(date);
                     }
                 };
-                return new DatePickerDialog(container, mListner, mCalendar.get(Calendar.YEAR),
-                        mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH));
+                return new DatePickerDialog(
+                        container,
+                        mListner,
+                        mCalendar.get(Calendar.YEAR),
+                        mCalendar.get(Calendar.MONTH),
+                        mCalendar.get(Calendar.DAY_OF_MONTH));
             case DIALOG_TIME_PICKER:
-                TimePickerDialog.OnTimeSetListener mListener = new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog.OnTimeSetListener mListener =
+                        new TimePickerDialog.OnTimeSetListener() {
                     public void onTimeSet(TimePicker view, int hour, int minute) {
+                        time = hour + ":" + minute + ":" + "00";
+                        ManualActivity.mEntry.setTime(time);
                     }
                 };
                 return new TimePickerDialog(container, mListener, mCalendar.get(Calendar.HOUR_OF_DAY),
@@ -103,4 +125,37 @@ public class DialogsFragment extends DialogFragment {
                 return null;
         }
     }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        Log.d("date set", date);
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                switch (id) {
+                    case DIALOG_DURATION:
+                        ManualActivity.mEntry.setDuration(Integer.parseInt(editText.getText().toString()));
+                        return;
+                    case DIALOG_DISTANCE:
+                        Log.d("onclick", editText.getText().toString());
+                        ManualActivity.mEntry.setDistance(Integer.parseInt(editText.getText().toString()));
+                        return;
+                    case DIALOG_CALORIES:
+                        ManualActivity.mEntry.setCalories(Integer.parseInt(editText.getText().toString()));
+                        return;
+                    case DIALOG_HEART_RATE:
+                        ManualActivity.mEntry.setHeart(Integer.parseInt(editText.getText().toString()));
+                        return;
+                    case DIALOG_COMMENT:
+                        return;
+                    default:
+                        return;
+                }
+            case DialogInterface.BUTTON_NEGATIVE:
+                return;
+            default:
+                return;
+        }
+    }
+
+
 }
